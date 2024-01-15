@@ -1,70 +1,37 @@
 'use client'
 
-import { FormEvent, useState } from "react";
-import AuthenticationService from "@/services/AuthenticationService";
-import { useRouter } from "next/navigation";
-import Button from "@/components/form/Button";
-import Input from "@/components/form/Input";
+import { Dragon } from '@/entities';
+import DragonsAPI from '@/services/DragonsAPI';
+import React, { useEffect, useState } from 'react'
 
-export default function Login() {
-  const router = useRouter();
+export default function Home() {
+  const [dragons, setDragons] = useState<Dragon[]>([]);
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [showError, setShowError] = useState(false);
-
-  const onSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    setIsLoading(true);
-    const isLoginSuccefull = await AuthenticationService.login(username, password);
-    setIsLoading(false);
-
-    if (isLoginSuccefull) {
-      router.push('/home');
-    } else {
-      setShowError(true);
+  useEffect(() => {
+    const getDragons = async () => {
+      const response = await DragonsAPI.getDragons();
+      
+      setDragons(response)
     }
-  }
+
+    getDragons();
+  }, []);
 
   return (
-    <main className="w-full h-full flex items-center justify-centerbg-slate-900">
-      <div>
-        <form
-          onSubmit={onSubmitForm}
-          className="flex flex-col gap-4 w-96 bg-slate-300 p-16 rounded-md"
-        >
-          <h1 className="text-center mb-8 font-bold text-4xl text-slate-800">Bem Vindo</h1>
-          <Input
-            type="text"
-            placeholder="Usuário"
-            required
-            value={username}
-            disabled={isLoading}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <Input 
-            type="password"
-            placeholder="Senha"
-            required
-            value={password}
-            disabled={isLoading}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <div
-            className="h-4"
-          >
-            {showError && <p className="text-red-600 text-center">Usuário ou senha incorretos</p>}
-          </div>
-          <Button
-            type="submit"
-            disabled={isLoading}
-          >
-            Entrar
-          </Button>
-        </form>
+    <main className="w-screen min-h-full p-12 bg-slate-900">
+      <h1 className='text-center text-4xl mb-8'>Dragons</h1>
+      <div className='w-full flex justify-center'>
+        <div className='w-2/3 flex flex-col'>
+          {dragons.map(dragon => (
+              <div
+                className='h-32 text-center flex flex-col justify-center items-center border cursor-pointer bg-slate-800'
+                key={dragon.id}
+              >
+                <h2 className='text-xl font-bold'>{dragon.name}</h2>
+                <p>{dragon.type}</p>
+              </div>
+            ))}
+        </div>
       </div>
     </main>
   )
