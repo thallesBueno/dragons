@@ -1,10 +1,11 @@
 'use client'
 
+import { Dragon } from '@/entities';
 import DragonsAPI from '@/services/DragonsAPI';
 import React, { useEffect, useState } from 'react'
 
 export default function Home() {
-  const [dragons, setDragons] = useState([]);
+  const [dragons, setDragons] = useState<Dragon[]>([]);
 
   useEffect(() => {
     const getDragons = async () => {
