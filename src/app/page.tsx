@@ -1,15 +1,32 @@
 'use client'
 
 import { FormEvent, useState } from "react";
+import AuthenticationService from "@/services/AuthenticationService";
+import { useRouter } from "next/navigation";
 import Button from "@/components/form/Button";
 import Input from "@/components/form/Input";
 
 export default function Home() {
+  const router = useRouter();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const onSubmitForm = (e: FormEvent<HTMLFormElement>) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
+
+  const onSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setIsLoading(true);
+    const isLoginSuccefull = await AuthenticationService.login(username, password);
+    setIsLoading(false);
+
+    if (isLoginSuccefull) {
+      router.push('/login');
+    } else {
+      setShowError(true);
+    }
   }
 
   return (
@@ -25,17 +42,28 @@ export default function Home() {
             placeholder="Usuário"
             required
             value={username}
+            disabled={isLoading}
             onChange={(e) => setUsername(e.target.value)}
           />
           <Input 
             type="password"
             placeholder="Senha"
             required
-            className="mb-4"
             value={password}
+            disabled={isLoading}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button type="submit">Entrar</Button>
+          <div
+            className="h-4"
+          >
+            {showError && <p className="text-red-600 text-center">Usuário ou senha incorretos</p>}
+          </div>
+          <Button
+            type="submit"
+            disabled={isLoading}
+          >
+            Entrar
+          </Button>
         </form>
       </div>
     </main>
