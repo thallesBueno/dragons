@@ -19,6 +19,10 @@ const getDragonDetails = async (id: string) => {
   return response.data;
 }
 
+const updateDragon = async (id: string, name: string, type: string, histories: string) => {
+  await axiosInstance.put(`/${id}`, { name, type, histories });
+}
+
 const deleteDragon = async (id: string) => {
   await axiosInstance.delete(`/${id}`);
 }
@@ -34,6 +38,7 @@ const createDragon = async (name: string, type: string, histories: string) => {
 const DragonsAPI = {
   getDragons,
   getDragonDetails,
+  updateDragon,
   deleteDragon,
   createDragon
 }
