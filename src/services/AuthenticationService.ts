@@ -3,7 +3,13 @@ function delay<T>(value: T, time: number) : Promise<T> {
 }
 
 const login = async (username: string, password: string) => {
-  return delay(username === 'admin' && password === 'admin', 2000);
+  const isAdmin = username === 'admin' && password === 'admin';
+
+  if (isAdmin) {
+    localStorage.setItem('auth_token', 'token');
+  }
+
+  return delay(isAdmin, 2000);
 }
 
 const AuthenticationService = {
