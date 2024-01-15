@@ -12,8 +12,13 @@ const login = async (username: string, password: string) => {
   return delay(isAdmin, 2000);
 }
 
+const logout = async () => {
+  localStorage.removeItem('auth_token');
+}
+
 const AuthenticationService = {
-  login
+  login,
+  logout
 }
 
 export default AuthenticationService
