@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Button from "@/components/form/Button";
 import Input from "@/components/form/Input";
 
-export default function Home() {
+export default function Login() {
   const router = useRouter();
 
   const [username, setUsername] = useState('');
@@ -23,14 +23,14 @@ export default function Home() {
     setIsLoading(false);
 
     if (isLoginSuccefull) {
-      router.push('/login');
+      router.push('/home');
     } else {
       setShowError(true);
     }
   }
 
   return (
-    <main className="w-full h-full flex items-center justify-center bg-slate-900">
+    <main className="w-full h-full flex items-center justify-centerbg-slate-900">
       <div>
         <form
           onSubmit={onSubmitForm}
