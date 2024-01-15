@@ -10,22 +10,32 @@ const axiosInstance = axios.create({
 const getDragons = async () => {
   const response = await axiosInstance.get<Dragon[]>('/');
 
-  console.log(response)
-
   return response.data;
 }
 
 const getDragonDetails = async (id: string) => {
   const response = await axiosInstance.get<Dragon>(`/${id}`);
 
-  console.log(response)
-
   return response.data;
+}
+
+const deleteDragon = async (id: string) => {
+  await axiosInstance.delete(`/${id}`);
+}
+
+const createDragon = async (name: string, type: string, histories: string) => {
+  await axiosInstance.post(`/`, {
+    name,
+    type,
+    histories
+  });
 }
 
 const DragonsAPI = {
   getDragons,
   getDragonDetails,
+  deleteDragon,
+  createDragon
 }
 
 export default DragonsAPI
