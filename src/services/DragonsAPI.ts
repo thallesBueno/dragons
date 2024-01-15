@@ -15,8 +15,17 @@ const getDragons = async () => {
   return response.data;
 }
 
+const getDragonDetails = async (id: string) => {
+  const response = await axiosInstance.get<Dragon>(`/${id}`);
+
+  console.log(response)
+
+  return response.data;
+}
+
 const DragonsAPI = {
-  getDragons
+  getDragons,
+  getDragonDetails,
 }
 
 export default DragonsAPI
